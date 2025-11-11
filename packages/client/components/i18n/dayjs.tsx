@@ -37,9 +37,12 @@ export async function loadTimeLocale(
     useLocale ??
     (target === "en-gb"
       ? dayjs_en
-      : ((await import(`../../node_modules/dayjs/esm/locale/${target}.js`).then(
-          (module) => module.default,
-        )) as ILocale));
+      : target === "en"
+        ? // "en" is the default dayjs locale, use en-gb as fallback
+          dayjs_en
+        : ((await import(`../../node_modules/dayjs/esm/locale/${target}.js`).then(
+            (module) => module.default,
+          )) as ILocale));
 
   // merge options for calendar
   (locale as unknown as { calendar: Record<string, string> }).calendar = {
@@ -74,6 +77,11 @@ export function updateTimeLocaleOptions(
   const [currentTarget, currentLocale] = timeLocale();
   target = target ?? currentTarget;
   useLocale = useLocale ?? currentLocale;
+
+  // If locale hasn't been loaded yet, skip updating
+  if (!useLocale || !useLocale.formats) {
+    return;
+  }
 
   const locale = {
     ...useLocale,

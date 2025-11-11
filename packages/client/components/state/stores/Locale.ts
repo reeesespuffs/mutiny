@@ -38,9 +38,9 @@ export class Locale extends AbstractStore<"locale", TypeLocale> {
   /**
    * Hydrate external context
    */
-  hydrate(): void {
+  async hydrate(): Promise<void> {
     const { lang, options } = this.get();
-    loadAndSwitchLocale(lang, options);
+    await loadAndSwitchLocale(lang, options);
     updateTimeLocaleOptions(options);
   }
 

@@ -89,7 +89,7 @@ export abstract class AbstractStore<T extends keyof Store, D> {
   /**
    * Hydrate external context
    */
-  abstract hydrate(): void;
+  abstract hydrate(): void | Promise<void>;
 
   /**
    * Generate default values
