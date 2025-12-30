@@ -377,7 +377,9 @@ export function MessageComposition(props: Props) {
           state.settings.getValue("accessibility:show_send_button") || false
         }
         actionsAppend={
-          <Show when={state.settings.getValue("accessibility:show_send_button")}>
+          <Show
+            when={state.settings.getValue("accessibility:show_send_button")}
+          >
             <IconButton
               _compositionSendMessage
               size="sm"

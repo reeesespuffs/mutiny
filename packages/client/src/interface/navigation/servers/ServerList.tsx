@@ -113,7 +113,7 @@ export const ServerList = (props: Props) => {
   });
 
   const showUnreadConversations = createMemo(() => {
-    return state.settings.getValue("accessibility:show_unread_conversations")
+    return state.settings.getValue("accessibility:show_unread_conversations");
   });
 
   // Ref for floating menu
@@ -210,7 +210,11 @@ export const ServerList = (props: Props) => {
             )}
           </For>
         </Show>
-        <Show when={showUnreadConversations() && props.unreadConversations.length > 9}>
+        <Show
+          when={
+            showUnreadConversations() && props.unreadConversations.length > 9
+          }
+        >
           <a class={entryContainer()} href={`/`}>
             <Avatar
               size={42}

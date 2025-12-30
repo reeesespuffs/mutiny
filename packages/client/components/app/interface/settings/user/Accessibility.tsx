@@ -1,5 +1,3 @@
-import { Show } from "solid-js";
-
 import { Trans } from "@lingui-solid/solid/macro";
 
 import { useState } from "@revolt/state";
@@ -21,13 +19,24 @@ export default function Accessibility() {
         </Text>
 
         <CategoryButton
-          action={<Checkbox checked={state.settings.getValue("accessibility:show_send_button")} />}
-          onClick={() => state.settings.setValue("accessibility:show_send_button", 
-            !state.settings.getValue("accessibility:show_send_button"))
+          action={
+            <Checkbox
+              checked={state.settings.getValue(
+                "accessibility:show_send_button",
+              )}
+            />
+          }
+          onClick={() =>
+            state.settings.setValue(
+              "accessibility:show_send_button",
+              !state.settings.getValue("accessibility:show_send_button"),
+            )
           }
           icon={<Symbol>send</Symbol>}
           description={
-            <Trans>If disabled, the Send Message button will only appear on mobile</Trans>
+            <Trans>
+              If disabled, the Send Message button will only appear on mobile
+            </Trans>
           }
         >
           <Trans>Always show Send Message button</Trans>
@@ -39,9 +48,20 @@ export default function Accessibility() {
           </Text>
 
           <CategoryButton
-            action={<Checkbox checked={state.settings.getValue("accessibility:show_unread_conversations")} />}
-            onClick={() => state.settings.setValue("accessibility:show_unread_conversations",
-              !state.settings.getValue("accessibility:show_unread_conversations"))
+            action={
+              <Checkbox
+                checked={state.settings.getValue(
+                  "accessibility:show_unread_conversations",
+                )}
+              />
+            }
+            onClick={() =>
+              state.settings.setValue(
+                "accessibility:show_unread_conversations",
+                !state.settings.getValue(
+                  "accessibility:show_unread_conversations",
+                ),
+              )
             }
             icon={<Symbol>chat_bubble</Symbol>}
           >

@@ -10,6 +10,7 @@ import { useModals } from "@revolt/modal";
 import { ColouredText, Column, Text, iconSize } from "@revolt/ui";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
+import MdAccessibility from "@material-design-icons/svg/outlined/accessibility.svg?component-solid";
 import MdAccountCircle from "@material-design-icons/svg/outlined/account_circle.svg?component-solid";
 import MdLanguage from "@material-design-icons/svg/outlined/language.svg?component-solid";
 import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
@@ -21,11 +22,11 @@ import MdScience from "@material-design-icons/svg/outlined/science.svg?component
 import MdSmartToy from "@material-design-icons/svg/outlined/smart_toy.svg?component-solid";
 import MdVerifiedUser from "@material-design-icons/svg/outlined/verified_user.svg?component-solid";
 import MdWorkspacePremium from "@material-design-icons/svg/outlined/workspace_premium.svg?component-solid";
-import MdAccessibility from "@material-design-icons/svg/outlined/accessibility.svg?component-solid"
 
 import pkg from "../../../../../../package.json";
 
 import { SettingsConfiguration } from ".";
+import Accessibility from "./user/Accessibility";
 import { MyAccount } from "./user/Account";
 import AdvancedSettings from "./user/Advanced";
 import { Feedback } from "./user/Feedback";
@@ -34,7 +35,6 @@ import Native from "./user/Native";
 import { Sessions } from "./user/Sessions";
 import { AccountCard } from "./user/_AccountCard";
 import { AppearanceMenu } from "./user/appearance";
-import Accessibility  from "./user/Accessibility";
 import { MyBots, ViewBot } from "./user/bots";
 import { EditProfile } from "./user/profile";
 import { EditSubscription } from "./user/subscriptions";
@@ -224,7 +224,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             },
             {
               id: "accessibility",
-               icon: <MdAccessibility {...iconSize(20)} />,
+              icon: <MdAccessibility {...iconSize(20)} />,
               title: <Trans>Accessibility</Trans>,
             },
             // {
