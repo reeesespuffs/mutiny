@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/stoatchat/for-web/compare/stoat-for-web-v0.2.1...stoat-for-web-v0.2.2) (2026-02-13)
+
+
+### Bug Fixes
+
+* Preserve message ID in anchor links ([#714](https://github.com/stoatchat/for-web/issues/714)) ([4ad6990](https://github.com/stoatchat/for-web/commit/4ad69901e7cfca355d08c042ef52960fe5fe6cd1))
+* use correct start path for PWA ([#718](https://github.com/stoatchat/for-web/issues/718)) ([a113e21](https://github.com/stoatchat/for-web/commit/a113e2171224aa1938cd2b37793c43aa10397842))
+
 ## [0.2.1](https://github.com/stoatchat/for-web/compare/stoat-for-web-v0.2.0...stoat-for-web-v0.2.1) (2026-02-13)
 
 
