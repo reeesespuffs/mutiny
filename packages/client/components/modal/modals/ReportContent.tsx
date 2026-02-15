@@ -1,9 +1,10 @@
 import { createFormControl, createFormGroup } from "solid-forms";
-import { For, Match, Switch } from "solid-js";
+import { For, Match, Switch, createEffect, onCleanup } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { API, Message as MessageI, Server, User } from "stoat.js";
 import { cva } from "styled-system/css";
+import { styled } from "styled-system/jsx";
 
 import { Message } from "@revolt/app";
 import {
@@ -54,6 +55,87 @@ export function ReportContentModal(
 ) {
   const { t } = useLingui();
   const { showError } = useModals();
+  let selectContainerRef: HTMLElement | undefined;
+
+  /*
+   * This is a bit of a hack to work around the fact that mdui-select's menu is rendered in a separate layer and doesn't inherit styles from the parent.
+   * We need to manually find the menu element and apply styles to position it correctly within the dialog and ensure it doesn't overflow the viewport.
+   * The menu is rendered when the select is clicked, so we listen for click events and use timeouts to check for the menu's existence and apply styles.
+   * We also clean up event listeners and timeouts when the component is unmounted.
+   * Ideally we find a more robust solution in the future, but this works for now to ensure the select menu is usable within the dialog.
+   *
+   * potential cause is the transform on the dialog component which causes issues with the positioning logic in mdui
+   * sideeffect is the animation is lost on the menu, but it is functional and properly positioned
+   */
+  createEffect(() => {
+    if (!props.show || !selectContainerRef) return;
+
+    const selectElement = selectContainerRef.querySelector(
+      "mdui-select",
+    ) as HTMLElement;
+    if (!selectElement) {
+      return;
+    }
+
+    let timeouts: number[] = [];
+
+    const findAndPositionMenu = () => {
+      let menu = selectElement.querySelector("mdui-menu") as HTMLElement;
+
+      if (!menu && selectElement.shadowRoot) {
+        menu = selectElement.shadowRoot.querySelector(
+          "mdui-menu",
+        ) as HTMLElement;
+      }
+
+      if (!menu) {
+        const allMenus = document.querySelectorAll("mdui-menu");
+        for (let i = 0; i < allMenus.length; i++) {
+          const m = allMenus[i] as HTMLElement;
+          if (
+            m.hasAttribute("open") ||
+            window.getComputedStyle(m).display !== "none"
+          ) {
+            menu = m;
+            break;
+          }
+        }
+      }
+
+      if (!menu) return false;
+
+      menu.style.position = "fixed";
+      menu.style.left = "0";
+      menu.style.top = "56px";
+      menu.style.maxHeight = "40vh";
+      menu.style.overflowY = "scroll";
+      menu.style.scrollbarWidth = "none";
+
+      return true;
+    };
+
+    const handleClick = () => {
+      timeouts.forEach((id) => clearTimeout(id));
+      timeouts = [];
+
+      // ensure the menu position isnt overwritten by mdui's internal logic after a click, we apply our styles multiple times with delays
+      const delays = [0, 10, 50];
+      delays.forEach((delay) => {
+        const id = window.setTimeout(() => {
+          findAndPositionMenu();
+        }, delay);
+        timeouts.push(id);
+      });
+    };
+
+    findAndPositionMenu();
+    selectElement.addEventListener("click", handleClick);
+
+    onCleanup(() => {
+      selectElement.removeEventListener("click", handleClick);
+      timeouts.forEach((id) => clearTimeout(id));
+    });
+  });
 
   const strings: Record<
     API.ContentReportReason | API.UserReportReason,
@@ -180,14 +262,16 @@ export function ReportContentModal(
             )}
           </div>
 
-          <Form2.TextField.Select control={group.controls.category}>
-            <MenuItem value="">
-              <Trans>Please select a reason</Trans>
-            </MenuItem>
-            <For each={reasons}>
-              {(value) => <MenuItem value={value}>{strings[value]}</MenuItem>}
-            </For>
-          </Form2.TextField.Select>
+          <SelectContainer ref={selectContainerRef}>
+            <Form2.TextField.Select control={group.controls.category} disablePortal={true}>
+              <MenuItem value="">
+                <Trans>Please select a reason</Trans>
+              </MenuItem>
+              <For each={reasons}>
+                {(value) => <MenuItem value={value}>{strings[value]}</MenuItem>}
+              </For>
+            </Form2.TextField.Select>
+          </SelectContainer>
 
           {/* TODO: use TextEditor? */}
           <Form2.TextField
@@ -210,6 +294,21 @@ const contentContainer = cva({
       marginTop: "0 !important",
       pointerEvents: "none",
       userSelect: "none",
+    },
+  },
+});
+
+const SelectContainer = styled("div", {
+  base: {
+    position: "relative",
+    overflow: "visible",
+    contain: "layout style",
+    "& mdui-select": {
+      width: "100%",
+      zIndex: 1000,
+    },
+    "& mdui-menu": {
+      zIndex: 10000,
     },
   },
 });
