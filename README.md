@@ -6,12 +6,12 @@
   [![Forks](https://img.shields.io/github/forks/reeesespuffs/mutiny?style=flat-square&logoColor=white)](https://github.com/reeesespuffs/mutiny/network/members)
   [![License](https://img.shields.io/github/license/reeesespuffs/mutiny?style=flat-square&logoColor=white)](https://github.com/reeesespuffs/mutiny/blob/main/LICENSE)
 </h1>
-Available on mutiny.chat/app, built with <a href="https://www.solidjs.com/">Solid.js</a> 💖. <br/>
+A unofficial Stoat client that adds QoL features like self-hosted support and plugins! <br> Available on <a href="https://mutiny.chat/app/">mutiny.chat/app</a>
 </div>
 <br/>
 
 ## Development Guide
-Before contributing, make yourself familiar with the [contribution guidelines](./github), and the [code style guidelines](./GUIDELINES.md)
+Before contributing, make yourself familiar with the [contribution guidelines](.github/contributing.md), and the [code style guidelines](./GUIDELINES.md)
 
 Before getting started, you'll want to install:
 
