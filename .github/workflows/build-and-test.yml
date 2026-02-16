@@ -29,14 +29,16 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup Mise
-        uses: immich-app/devtools/actions/use-mise@cd24790a7f5f6439ac32cc94f5523cb2de8bfa8c # use-mise-action-v1.1.0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: lts/*
+      - run: pnpm install
+      - run: pnpm build:deps
 
-      - run: mise install:frozen
-      - run: mise build:deps
-      - run: mise lingui
+      - name: Extract catalogs
+        run: |
+          pnpm --filter client lingui:extract
 
       - name: Commit changes
         id: commit
@@ -58,15 +60,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-
-      - name: Setup Mise
-        uses: immich-app/devtools/actions/use-mise@cd24790a7f5f6439ac32cc94f5523cb2de8bfa8c # use-mise-action-v1.1.0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: lts/*
+      - run: pnpm install
+      - run: pnpm build:deps
 
-      - run: mise install:frozen
-      - run: mise build:deps
-      - run: mise build:check
+      - name: Run typecheck
+        run: pnpm test:typecheck
 
   lint-format:
     name: Lint & Format
@@ -80,16 +82,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-
-      - name: Setup Mise
-        uses: immich-app/devtools/actions/use-mise@cd24790a7f5f6439ac32cc94f5523cb2de8bfa8c # use-mise-action-v1.1.0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: lts/*
+      - run: pnpm install
+      - run: pnpm build:deps
 
-      - run: mise install:frozen
-      - run: mise build:deps
-      - run: mise lint
-      - run: mise format
+      - name: Run linter
+        run: pnpm test:lint
+      - name: Run formatter
+        run: pnpm test:fmt
 
   e2e:
     name: e2e Integration Test
@@ -105,16 +108,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-
-      - name: Setup Mise
-        uses: immich-app/devtools/actions/use-mise@cd24790a7f5f6439ac32cc94f5523cb2de8bfa8c # use-mise-action-v1.1.0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: lts/*
+      - run: pnpm install
+      - run: pnpm build:deps
 
-      - run: mise install:frozen
-      - run: mise build:deps
-      - run: mise test:e2e:install-deps
-      - run: mise test:e2e
+      - name: Install Playwright Browsers
+        run: pnpm --filter client exec playwright install --with-deps
+      - name: Build web app
+        run: pnpm build:web
+      - name: Run Playwright tests
+        run: pnpm test:e2e
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
