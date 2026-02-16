@@ -2,42 +2,38 @@
 <h1>
   Mutiny
   
-  [![Stars](https://img.shields.io/github/stars/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/stargazers)
-  [![Forks](https://img.shields.io/github/forks/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/network/members)
-  [![Pull Requests](https://img.shields.io/github/issues-pr/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/pulls)
-  [![Issues](https://img.shields.io/github/issues/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/issues)
-  [![Contributors](https://img.shields.io/github/contributors/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/graphs/contributors)
-  [![License](https://img.shields.io/github/license/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/blob/main/LICENSE)
+  [![Stars](https://img.shields.io/github/stars/reeesespuffs/mutiny?style=flat-square&logoColor=white)](https://github.com/reeesespuffs/mutiny/stargazers)
+  [![Forks](https://img.shields.io/github/forks/reeesespuffs/mutiny?style=flat-square&logoColor=white)](https://github.com/reeesespuffs/mutiny/network/members)
+  [![License](https://img.shields.io/github/license/reeesespuffs/mutiny?style=flat-square&logoColor=white)](https://github.com/reeesespuffs/mutiny/blob/main/LICENSE)
 </h1>
-The official web client powering https://stoat.chat/app, built with <a href="https://www.solidjs.com/">Solid.js</a> 💖. <br/>
-Track the project roadmap on <a href="https://op.stoatinternal.com/projects/revolt-for-web/roadmap">OpenProject</a>.
+Available on mutiny.chat/app, built with <a href="https://www.solidjs.com/">Solid.js</a> 💖. <br/>
 </div>
 <br/>
 
 ## Development Guide
-
-Before contributing, make yourself familiar with [our contribution guidelines](https://developers.stoat.chat/developing/contrib/), the [code style guidelines](./GUIDELINES.md), and the [technical documentation for this project](https://stoatchat.github.io/for-web/).
+Before contributing, make yourself familiar with the [contribution guidelines](./github), and the [code style guidelines](./GUIDELINES.md)
 
 Before getting started, you'll want to install:
 
 - Git
-- mise-en-place
+- Node.js
+- pnpm (run `corepack enable`)
 
 Then proceed to setup:
 
 ```bash
 # clone the repository
-git clone --recursive https://github.com/stoatchat/for-web client
-cd client
+git clone --recursive https://github.com/reeesespuffs/mutiny mutiny
+cd mutiny
 
 # update submodules if you pull new changes
 # git submodule init && git submodule update
 
 # install all packages
-mise install:frozen
+pnpm i --frozen-lockfile
 
 # build deps:
-mise build:deps
+pnpm build:deps
 
 # or build a specific dep (e.g. stoat.js updates):
 # pnpm --filter stoat.js run build
@@ -46,10 +42,7 @@ mise build:deps
 cp packages/client/.env.example packages/client/.env
 
 # run dev server
-mise dev
-
-# run all CI checks locally
-mise check
+pnpm dev
 ```
 
 Finally, navigate to http://local.revolt.chat:5173.
@@ -76,16 +69,16 @@ git submodule deinit packages/client/assets
 
 ```bash
 # install packages
-mise install:frozen
+pnpm i --frozen-lockfile
 
 # build dependencies
-mise build:deps
+pnpm build:deps
 
 # build for web
-mise build
+pnpm build
 
 # ... when building for Stoat production
-mise build:prod
+pnpm build:prod
 ```
 
 You can now deploy the directory `packages/client/dist`.
